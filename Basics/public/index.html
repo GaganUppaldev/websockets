@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket with Socket.IO</title>
+</head>
+<body>
+    <h1>WebSocket Example</h1>
+    <input type="text" id="messageInput" placeholder="Type your message">
+    <button id="sendButton">Send Message</button>
+    <p id="output"></p>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Connect to the server
+        const socket = io();
+
+        // Elements
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const output = document.getElementById('output');
+
+        // Send a message to the server
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value;
+            if (message) {
+                socket.emit('message', message);
+                messageInput.value = '';
+            }
+        });
+
+        // Listen for messages from the server
+        socket.on('message', (data) => {
+            output.textContent = `Server says: ${data}`;
+        });
+    </script>
+</body>
+</html>
